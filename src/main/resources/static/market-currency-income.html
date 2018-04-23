@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>货币收入达成</title>
+  <script type="text/javascript" src="/ichart.1.2.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!--<script>-->
+    <!--$(document).ready(function () {-->
+      <!--htmlobj = $.ajax({url: "/market/monthList", async: false});-->
+      <!--customerList = $.post({url: "/market/customerList", async: false});-->
+      <!--var cumstomer = eval('(' + customerList.responseText + ')');-->
+      <!--var month = eval('(' + htmlobj.responseText + ')');-->
+      <!--$.each(cumstomer, function (index, content) {-->
+        <!--$("#customerId").append("<option value='" + content.customerno + "'>" + content.customername-->
+            <!--+ "</option>");-->
+      <!--});-->
+      <!--$.each(month, function (index, itemobj) {-->
+        <!--$("#monthListId").append("<option value='" + itemobj + "'>" + itemobj+"</option>");-->
+      <!--});-->
+    <!--});-->
+  <!--</script>-->
+</head>
+<body>
+选择客户：
+<select id="customerId"></select> &nbsp;&nbsp;&nbsp;&nbsp;选择月份：<select id="monthListId"></select>
+<div id='canvasDiv'></div>
+<script>
+
+  // $(function(){
+  //   var flow=[];
+  //   for(var i=0;i<25;i++){
+  //     flow.push(Math.floor(Math.random()*(10+((i%16)*5)))+10);
+  //   }
+  //
+  //   var data = [
+  //     {
+  //       name : '万元',
+  //       value:flow,
+  //       color:'#ec4646',
+  //       line_width:2
+  //     }
+  //   ];
+  //
+  //   var labels = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+  //
+  //   var chart = new iChart.LineBasic2D({
+  //     render : 'canvasDiv',
+  //     data: data,
+  //     tipMocker:{
+  //
+  //     },
+  //     align:'center',
+  //     title : {
+  //       text:'货币收入达成',
+  //       font : '微软雅黑',
+  //       fontsize:24,
+  //       color:'#b4b4b4'
+  //     },
+  //     subtitle : {
+  //       text:'',
+  //       font : '微软雅黑',
+  //       color:'#b4b4b4'
+  //     },
+  //     footnote : {
+  //       text:'ichartjs.com',
+  //       font : '微软雅黑',
+  //       fontsize:11,
+  //       fontweight:600,
+  //       padding:'0 28',
+  //       color:'#b4b4b4'
+  //     },
+  //     width : 800,
+  //     height : 400,
+  //     shadow:true,
+  //     shadow_color : '#63626c',
+  //     shadow_blur : 1,
+  //     shadow_offsetx : 0,
+  //     shadow_offsety : 0,
+  //     background_color:'#ffffff',
+  //     tip:{
+  //       enable:true,
+  //       shadow:true,
+  //       listeners:{
+  //         //tip:提示框对象、name:数据名称、value:数据值、text:当前文本、i:数据点的索引
+  //         parseText:function(tip,name,value,text,i){
+  //           return "<span style='color:#005268;font-size:12px;'>"+labels[i]+":00访问量约:<br/>"+
+  //               "</span><span style='color:#005268;font-size:20px;'>"+value+"万</span>";
+  //         }
+  //       }
+  //     },
+  //     crosshair:{
+  //       enable:true,
+  //       line_color:'#ec4646'
+  //     },
+  //     sub_option : {
+  //       smooth : true,
+  //       label:false,
+  //       hollow:false,
+  //       hollow_inside:false,
+  //       point_size:5
+  //     },
+  //     coordinate:{
+  //       width:640,
+  //       height:260,
+  //       striped_factor : 0.18,
+  //       grid_color:'#4e4e4e',
+  //       axis:{
+  //         color:'#252525',
+  //         width:[0,0,4,4]
+  //       },
+  //       scale:[{
+  //         position:'left',
+  //         start_scale:0,
+  //         end_scale:100,
+  //         scale_space:10,
+  //         scale_size:2,
+  //         scale_enable : false,
+  //         label : {color:'#9d987a',font : '微软雅黑',fontsize:11,fontweight:600},
+  //         scale_color:'#9f9f9f'
+  //       },{
+  //         position:'bottom',
+  //         label : {color:'#9d987a',font : '微软雅黑',fontsize:11,fontweight:600},
+  //         scale_enable : false,
+  //         labels:labels
+  //       }]
+  //     }
+  //   });
+  //   //利用自定义组件构造左侧说明文本
+  //   chart.plugin(new iChart.Custom({
+  //     drawFn:function(){
+  //       //计算位置
+  //       var coo = chart.getCoordinate(),
+  //           x = coo.get('originx'),
+  //           y = coo.get('originy'),
+  //           w = coo.width,
+  //           h = coo.height;
+  //       //在左上侧的位置，渲染一个单位的文字
+  //       chart.target.textAlign('start')
+  //       .textBaseline('bottom')
+  //       .textFont('600 11px 微软雅黑')
+  //       .fillText('金额(万)',x-40,y-12,false,'#9d987a')
+  //       .textBaseline('top')
+  //       .fillText('(月份)',x+w+12,y+h+10,false,'#9d987a');
+  //
+  //     }
+  //   }));
+  //   //开始画图
+  //   chart.draw();
+  // });
+  $(function () {
+    var pv = [], ip = [], t;
+    var currency = $.ajax({url: "/market/currencyIncom", async: false});
+    //创建随机数据
+    var curren = eval('(' + currency.responseText + ')');;
+    $.each(curren, function (index, content) {
+      pv.push(content.iamount);
+    });
+    //创建随机数据
+    // for (var i = 0; i < 61; i++) {
+    //   t = Math.floor(Math.random() * (30 + ((i % 12) * 5))) + 10;
+    //   pv.push(t);
+    //   t = Math.floor(t * 0.5);
+    //   t = t - Math.floor((Math.random() * t) / 2);
+    //   ip.push(t);
+    // }
+
+    var data = [
+      {
+        name: '去年同比',
+        value: pv,
+        color: '#1ecf27',
+        line_width: 2
+      }
+      // {
+      //   name: '当月预测',
+      //   value: ip,
+      //   color: '#cf2813',
+      //   line_width: 2
+      // }
+    ];
+
+    //创建x轴标签文本
+    var currencyMonth = $.ajax({url: "/market/currencyIncom", async: false});
+    //创建随机数据
+    var labels = [];
+    var months = eval('(' + currencyMonth.responseText + ')');;
+    $.each(months, function (index, content) {
+      labels.push(content.months);
+    });
+
+    var chart = new iChart.LineBasic2D({
+      render: 'canvasDiv',
+      data: data,
+      align: 'center',
+      title: '货币收入达成',
+      subtitle: '',
+      footnote: '数据来源：销售易',
+      width: 1200,
+      height: 500,
+      background_color: '#FEFEFE',
+      tip: {
+        enable: true,
+        shadow: true,
+        move_duration: 400,
+        border: {
+          enable: true,
+          radius: 5,
+          width: 2,
+          color: '#3f8695'
+        },
+        listeners: {
+          //tip:提示框对象、name:数据名称、value:数据值、text:当前文本、i:数据点的索引
+          parseText: function (tip, name, value, text, i) {
+            return name + " 销售额:" + value + "百万";
+          }
+        }
+      },
+      tipMocker: function (tips, i) {
+        return "<div style='font-weight:600'>" +
+            labels[Math.floor(i)] + " " +//日期
+            // (((i % 12) * 2 < 10 ? "0" : "") + (i % 12) * 2) + ":00" +//时间
+            "</div>" + tips.join("<br/>");
+      },
+      legend: {
+        enable: true,
+        row: 1,//设置在一行上显示，与column配合使用
+        column: 'max',
+        valign: 'top',
+        sign: 'bar',
+        background_color: null,//设置透明背景
+        offsetx: -80,//设置x轴偏移，满足位置需要
+        border: true
+      },
+      crosshair: {
+        enable: true,
+        line_color: '#62bce9'//十字线的颜色
+      },
+      sub_option: {
+        label: false,
+        smooth: true,
+        intersection: false
+      },
+      coordinate: {
+        width: 840,
+        height: 440,
+        axis: {
+          color: '#dcdcdc',
+          width: 1
+        },
+        scale: [{
+          position: 'left',
+          start_scale: 0,
+          end_scale: 500,
+          scale_space: 50,
+          scale_size: 2,
+          scale_color: '#9f9f9f'
+        }, {
+          position: 'bottom',
+          labels: labels
+        }]
+      }
+    });
+    //利用自定义组件构造左侧说明文本
+    chart.plugin(new iChart.Custom({
+      drawFn: function () {
+        //计算位置
+        var coo = chart.getCoordinate(),
+            x = coo.get('originx'),
+            y = coo.get('originy'),
+            w = coo.width,
+            h = coo.height;
+        //在左上侧的位置，渲染一个单位的文字
+        chart.target.textAlign('start')
+        .textBaseline('bottom')
+        .textFont('600 11px 微软雅黑')
+        .fillText('金额(百万)', x - 40, y - 12, false, '#9d987a')
+        .textBaseline('top')
+        .fillText('', x + w + 12, y + h + 10, false, '#9d987a');
+      }
+    }));
+    //开始画图
+    chart.draw();
+  });
+
+</script>
+
+</body>
+</html>

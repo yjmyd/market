@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sell.market.mapper.CustomerMapper">
+  <resultMap id="BaseResultMap" type="com.sell.market.model.Customer">
+    <id column="customername" jdbcType="VARCHAR" property="customername" />
+    <result column="customerno" jdbcType="VARCHAR" property="customerno" />
+    <result column="customerlevel" jdbcType="VARCHAR" property="customerlevel" />
+    <result column="upcustomer" jdbcType="VARCHAR" property="upcustomer" />
+    <result column="aflfunction" jdbcType="VARCHAR" property="aflfunction" />
+    <result column="busregistration" jdbcType="VARCHAR" property="busregistration" />
+    <result column="industry" jdbcType="VARCHAR" property="industry" />
+    <result column="detailedaddress" jdbcType="VARCHAR" property="detailedaddress" />
+    <result column="zipcode" jdbcType="VARCHAR" property="zipcode" />
+    <result column="people" jdbcType="VARCHAR" property="people" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="moblephone" jdbcType="VARCHAR" property="moblephone" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="compurl" jdbcType="VARCHAR" property="compurl" />
+    <result column="sina" jdbcType="VARCHAR" property="sina" />
+    <result column="totalnumber" jdbcType="INTEGER" property="totalnumber" />
+    <result column="sales" jdbcType="VARCHAR" property="sales" />
+    <result column="remaks" jdbcType="VARCHAR" property="remaks" />
+    <result column="legarepretive" jdbcType="VARCHAR" property="legarepretive" />
+    <result column="registeredcapital" jdbcType="VARCHAR" property="registeredcapital" />
+    <result column="setuptime" jdbcType="VARCHAR" property="setuptime" />
+    <result column="cooperativestate" jdbcType="VARCHAR" property="cooperativestate" />
+    <result column="customerreputation" jdbcType="VARCHAR" property="customerreputation" />
+    <result column="customerquality" jdbcType="VARCHAR" property="customerquality" />
+    <result column="fromerpno" jdbcType="VARCHAR" property="fromerpno" />
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="ownname" jdbcType="VARCHAR" property="ownname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    customername, customerno, customerlevel, upcustomer, aflfunction, busregistration, 
+    industry, detailedaddress, zipcode, people, phone, moblephone, fax, compurl, sina, 
+    totalnumber, sales, remaks, legarepretive, registeredcapital, setuptime, cooperativestate, 
+    customerreputation, customerquality, fromerpno, id, ownname
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from customer
+    where customername = #{customername,jdbcType=VARCHAR}
+  </select>
+  <select id="findCustomList" parameterType="com.sell.market.model.Customer" resultMap="BaseResultMap">
+    select
+    customerno,customername
+    from customer
+    <where>
+      <if test="customerlevel!=null">
+          and customerlevel = #{customerlevel}
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from customer
+    where customername = #{customername,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sell.market.model.Customer">
+    <selectKey keyProperty="customername" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into customer (customerno, customerlevel, upcustomer, 
+      aflfunction, busregistration, industry, 
+      detailedaddress, zipcode, people, 
+      phone, moblephone, fax, 
+      compurl, sina, totalnumber, 
+      sales, remaks, legarepretive, 
+      registeredcapital, setuptime, cooperativestate, 
+      customerreputation, customerquality, fromerpno, 
+      id, ownname, lastchangetime
+      )
+    values (#{customerno,jdbcType=VARCHAR}, #{customerlevel,jdbcType=VARCHAR}, #{upcustomer,jdbcType=VARCHAR}, 
+      #{aflfunction,jdbcType=VARCHAR}, #{busregistration,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, 
+      #{detailedaddress,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}, #{people,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{moblephone,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, 
+      #{compurl,jdbcType=VARCHAR}, #{sina,jdbcType=VARCHAR}, #{totalnumber,jdbcType=INTEGER}, 
+      #{sales,jdbcType=VARCHAR}, #{remaks,jdbcType=VARCHAR}, #{legarepretive,jdbcType=VARCHAR}, 
+      #{registeredcapital,jdbcType=VARCHAR}, #{setuptime,jdbcType=VARCHAR}, #{cooperativestate,jdbcType=VARCHAR}, 
+      #{customerreputation,jdbcType=VARCHAR}, #{customerquality,jdbcType=VARCHAR}, #{fromerpno,jdbcType=VARCHAR}, 
+      #{id,jdbcType=INTEGER}, #{ownname,jdbcType=VARCHAR}, #{lastchangetime,jdbcType=LONGVARBINARY}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sell.market.model.Customer">
+    <selectKey keyProperty="customername" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into customer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="customerno != null">
+        customerno,
+      </if>
+      <if test="customerlevel != null">
+        customerlevel,
+      </if>
+      <if test="upcustomer != null">
+        upcustomer,
+      </if>
+      <if test="aflfunction != null">
+        aflfunction,
+      </if>
+      <if test="busregistration != null">
+        busregistration,
+      </if>
+      <if test="industry != null">
+        industry,
+      </if>
+      <if test="detailedaddress != null">
+        detailedaddress,
+      </if>
+      <if test="zipcode != null">
+        zipcode,
+      </if>
+      <if test="people != null">
+        people,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="moblephone != null">
+        moblephone,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="compurl != null">
+        compurl,
+      </if>
+      <if test="sina != null">
+        sina,
+      </if>
+      <if test="totalnumber != null">
+        totalnumber,
+      </if>
+      <if test="sales != null">
+        sales,
+      </if>
+      <if test="remaks != null">
+        remaks,
+      </if>
+      <if test="legarepretive != null">
+        legarepretive,
+      </if>
+      <if test="registeredcapital != null">
+        registeredcapital,
+      </if>
+      <if test="setuptime != null">
+        setuptime,
+      </if>
+      <if test="cooperativestate != null">
+        cooperativestate,
+      </if>
+      <if test="customerreputation != null">
+        customerreputation,
+      </if>
+      <if test="customerquality != null">
+        customerquality,
+      </if>
+      <if test="fromerpno != null">
+        fromerpno,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ownname != null">
+        ownname,
+      </if>
+      <if test="lastchangetime != null">
+        lastchangetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="customerno != null">
+        #{customerno,jdbcType=VARCHAR},
+      </if>
+      <if test="customerlevel != null">
+        #{customerlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="upcustomer != null">
+        #{upcustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="aflfunction != null">
+        #{aflfunction,jdbcType=VARCHAR},
+      </if>
+      <if test="busregistration != null">
+        #{busregistration,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedaddress != null">
+        #{detailedaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null">
+        #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="people != null">
+        #{people,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="moblephone != null">
+        #{moblephone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="compurl != null">
+        #{compurl,jdbcType=VARCHAR},
+      </if>
+      <if test="sina != null">
+        #{sina,jdbcType=VARCHAR},
+      </if>
+      <if test="totalnumber != null">
+        #{totalnumber,jdbcType=INTEGER},
+      </if>
+      <if test="sales != null">
+        #{sales,jdbcType=VARCHAR},
+      </if>
+      <if test="remaks != null">
+        #{remaks,jdbcType=VARCHAR},
+      </if>
+      <if test="legarepretive != null">
+        #{legarepretive,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredcapital != null">
+        #{registeredcapital,jdbcType=VARCHAR},
+      </if>
+      <if test="setuptime != null">
+        #{setuptime,jdbcType=VARCHAR},
+      </if>
+      <if test="cooperativestate != null">
+        #{cooperativestate,jdbcType=VARCHAR},
+      </if>
+      <if test="customerreputation != null">
+        #{customerreputation,jdbcType=VARCHAR},
+      </if>
+      <if test="customerquality != null">
+        #{customerquality,jdbcType=VARCHAR},
+      </if>
+      <if test="fromerpno != null">
+        #{fromerpno,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ownname != null">
+        #{ownname,jdbcType=VARCHAR},
+      </if>
+      <if test="lastchangetime != null">
+        #{lastchangetime,jdbcType=LONGVARBINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.market.model.Customer">
+    update customer
+    <set>
+      <if test="customerno != null">
+        customerno = #{customerno,jdbcType=VARCHAR},
+      </if>
+      <if test="customerlevel != null">
+        customerlevel = #{customerlevel,jdbcType=VARCHAR},
+      </if>
+      <if test="upcustomer != null">
+        upcustomer = #{upcustomer,jdbcType=VARCHAR},
+      </if>
+      <if test="aflfunction != null">
+        aflfunction = #{aflfunction,jdbcType=VARCHAR},
+      </if>
+      <if test="busregistration != null">
+        busregistration = #{busregistration,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null">
+        industry = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedaddress != null">
+        detailedaddress = #{detailedaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="zipcode != null">
+        zipcode = #{zipcode,jdbcType=VARCHAR},
+      </if>
+      <if test="people != null">
+        people = #{people,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="moblephone != null">
+        moblephone = #{moblephone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="compurl != null">
+        compurl = #{compurl,jdbcType=VARCHAR},
+      </if>
+      <if test="sina != null">
+        sina = #{sina,jdbcType=VARCHAR},
+      </if>
+      <if test="totalnumber != null">
+        totalnumber = #{totalnumber,jdbcType=INTEGER},
+      </if>
+      <if test="sales != null">
+        sales = #{sales,jdbcType=VARCHAR},
+      </if>
+      <if test="remaks != null">
+        remaks = #{remaks,jdbcType=VARCHAR},
+      </if>
+      <if test="legarepretive != null">
+        legarepretive = #{legarepretive,jdbcType=VARCHAR},
+      </if>
+      <if test="registeredcapital != null">
+        registeredcapital = #{registeredcapital,jdbcType=VARCHAR},
+      </if>
+      <if test="setuptime != null">
+        setuptime = #{setuptime,jdbcType=VARCHAR},
+      </if>
+      <if test="cooperativestate != null">
+        cooperativestate = #{cooperativestate,jdbcType=VARCHAR},
+      </if>
+      <if test="customerreputation != null">
+        customerreputation = #{customerreputation,jdbcType=VARCHAR},
+      </if>
+      <if test="customerquality != null">
+        customerquality = #{customerquality,jdbcType=VARCHAR},
+      </if>
+      <if test="fromerpno != null">
+        fromerpno = #{fromerpno,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ownname != null">
+        ownname = #{ownname,jdbcType=VARCHAR},
+      </if>
+      <if test="lastchangetime != null">
+        lastchangetime = #{lastchangetime,jdbcType=LONGVARBINARY},
+      </if>
+    </set>
+    where customername = #{customername,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sell.market.model.Customer">
+    update customer
+    set customerno = #{customerno,jdbcType=VARCHAR},
+      customerlevel = #{customerlevel,jdbcType=VARCHAR},
+      upcustomer = #{upcustomer,jdbcType=VARCHAR},
+      aflfunction = #{aflfunction,jdbcType=VARCHAR},
+      busregistration = #{busregistration,jdbcType=VARCHAR},
+      industry = #{industry,jdbcType=VARCHAR},
+      detailedaddress = #{detailedaddress,jdbcType=VARCHAR},
+      zipcode = #{zipcode,jdbcType=VARCHAR},
+      people = #{people,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      moblephone = #{moblephone,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      compurl = #{compurl,jdbcType=VARCHAR},
+      sina = #{sina,jdbcType=VARCHAR},
+      totalnumber = #{totalnumber,jdbcType=INTEGER},
+      sales = #{sales,jdbcType=VARCHAR},
+      remaks = #{remaks,jdbcType=VARCHAR},
+      legarepretive = #{legarepretive,jdbcType=VARCHAR},
+      registeredcapital = #{registeredcapital,jdbcType=VARCHAR},
+      setuptime = #{setuptime,jdbcType=VARCHAR},
+      cooperativestate = #{cooperativestate,jdbcType=VARCHAR},
+      customerreputation = #{customerreputation,jdbcType=VARCHAR},
+      customerquality = #{customerquality,jdbcType=VARCHAR},
+      fromerpno = #{fromerpno,jdbcType=VARCHAR},
+      id = #{id,jdbcType=INTEGER},
+      ownname = #{ownname,jdbcType=VARCHAR},
+      lastchangetime = #{lastchangetime,jdbcType=LONGVARBINARY}
+    where customername = #{customername,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sell.market.model.Customer">
+    update customer
+    set customerno = #{customerno,jdbcType=VARCHAR},
+      customerlevel = #{customerlevel,jdbcType=VARCHAR},
+      upcustomer = #{upcustomer,jdbcType=VARCHAR},
+      aflfunction = #{aflfunction,jdbcType=VARCHAR},
+      busregistration = #{busregistration,jdbcType=VARCHAR},
+      industry = #{industry,jdbcType=VARCHAR},
+      detailedaddress = #{detailedaddress,jdbcType=VARCHAR},
+      zipcode = #{zipcode,jdbcType=VARCHAR},
+      people = #{people,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      moblephone = #{moblephone,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      compurl = #{compurl,jdbcType=VARCHAR},
+      sina = #{sina,jdbcType=VARCHAR},
+      totalnumber = #{totalnumber,jdbcType=INTEGER},
+      sales = #{sales,jdbcType=VARCHAR},
+      remaks = #{remaks,jdbcType=VARCHAR},
+      legarepretive = #{legarepretive,jdbcType=VARCHAR},
+      registeredcapital = #{registeredcapital,jdbcType=VARCHAR},
+      setuptime = #{setuptime,jdbcType=VARCHAR},
+      cooperativestate = #{cooperativestate,jdbcType=VARCHAR},
+      customerreputation = #{customerreputation,jdbcType=VARCHAR},
+      customerquality = #{customerquality,jdbcType=VARCHAR},
+      fromerpno = #{fromerpno,jdbcType=VARCHAR},
+      id = #{id,jdbcType=INTEGER},
+      ownname = #{ownname,jdbcType=VARCHAR}
+    where customername = #{customername,jdbcType=VARCHAR}
+  </update>
+</mapper>

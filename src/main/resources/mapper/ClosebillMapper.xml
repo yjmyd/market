@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sell.market.mapper.ClosebillMapper">
+  <resultMap id="BaseResultMap" type="com.sell.market.model.Closebill">
+    <id column="iId" jdbcType="VARCHAR" property="iid" />
+    <result column="cvouchid" jdbcType="VARCHAR" property="cvouchid" />
+    <result column="csscode" jdbcType="VARCHAR" property="csscode" />
+    <result column="cssname" jdbcType="VARCHAR" property="cssname" />
+    <result column="cdwcode" jdbcType="VARCHAR" property="cdwcode" />
+    <result column="cdwname" jdbcType="VARCHAR" property="cdwname" />
+    <result column="iamount" jdbcType="DECIMAL" property="iamount" />
+    <result column="dvouchdate" jdbcType="TIMESTAMP" property="dvouchdate" />
+    <result column="cdeptcode" jdbcType="VARCHAR" property="cdeptcode" />
+    <result column="cdeptname" jdbcType="VARCHAR" property="cdeptname" />
+    <result column="cdigest" jdbcType="VARCHAR" property="cdigest" />
+    <result column="createstatus" jdbcType="INTEGER" property="createstatus" />
+    <result column="updatestatus" jdbcType="INTEGER" property="updatestatus" />
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="fromerpno" jdbcType="VARCHAR" property="fromerpno" />
+    <result column="ccusname" jdbcType="VARCHAR" property="ccusname" />
+    <result column="months" jdbcType="VARCHAR" property="months" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    iId, cvouchid, csscode, cssname, cdwcode, cdwname, iamount, dvouchdate, cdeptcode, 
+    cdeptname, cdigest, createstatus, updatestatus, id, fromerpno, ccusname
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from closebill
+    where iId = #{iid,jdbcType=VARCHAR}
+  </select>
+  <select id="findCloseBillList" resultMap="BaseResultMap">
+    SELECT
+    sum( c.iamount)/1000000 iamount,
+    DATE_FORMAT( c.dvouchdate, '%Y-%m') months
+    FROM
+    closebill c
+    WHERE
+    DATE_FORMAT( c.dvouchdate, '%Y-%m' ) <![CDATA[ >= ]]> #{startTime}
+    AND DATE_FORMAT( c.dvouchdate, '%Y-%m' ) <![CDATA[ <= ]]> #{endTime}
+    GROUP BY
+    months
+    order by months
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from closebill
+    where iId = #{iid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sell.market.model.Closebill">
+    <selectKey keyProperty="cvouchid" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into closebill (iId, csscode, cssname, 
+      cdwcode, cdwname, iamount, 
+      dvouchdate, cdeptcode, cdeptname, 
+      cdigest, createstatus, updatestatus, 
+      id, fromerpno, ccusname
+      )
+    values (#{iid,jdbcType=VARCHAR}, #{csscode,jdbcType=VARCHAR}, #{cssname,jdbcType=VARCHAR}, 
+      #{cdwcode,jdbcType=VARCHAR}, #{cdwname,jdbcType=VARCHAR}, #{iamount,jdbcType=DECIMAL}, 
+      #{dvouchdate,jdbcType=TIMESTAMP}, #{cdeptcode,jdbcType=VARCHAR}, #{cdeptname,jdbcType=VARCHAR}, 
+      #{cdigest,jdbcType=VARCHAR}, #{createstatus,jdbcType=INTEGER}, #{updatestatus,jdbcType=INTEGER}, 
+      #{id,jdbcType=INTEGER}, #{fromerpno,jdbcType=VARCHAR}, #{ccusname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sell.market.model.Closebill">
+    <selectKey keyProperty="cvouchid" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into closebill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="iid != null">
+        iId,
+      </if>
+      <if test="csscode != null">
+        csscode,
+      </if>
+      <if test="cssname != null">
+        cssname,
+      </if>
+      <if test="cdwcode != null">
+        cdwcode,
+      </if>
+      <if test="cdwname != null">
+        cdwname,
+      </if>
+      <if test="iamount != null">
+        iamount,
+      </if>
+      <if test="dvouchdate != null">
+        dvouchdate,
+      </if>
+      <if test="cdeptcode != null">
+        cdeptcode,
+      </if>
+      <if test="cdeptname != null">
+        cdeptname,
+      </if>
+      <if test="cdigest != null">
+        cdigest,
+      </if>
+      <if test="createstatus != null">
+        createstatus,
+      </if>
+      <if test="updatestatus != null">
+        updatestatus,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fromerpno != null">
+        fromerpno,
+      </if>
+      <if test="ccusname != null">
+        ccusname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="iid != null">
+        #{iid,jdbcType=VARCHAR},
+      </if>
+      <if test="csscode != null">
+        #{csscode,jdbcType=VARCHAR},
+      </if>
+      <if test="cssname != null">
+        #{cssname,jdbcType=VARCHAR},
+      </if>
+      <if test="cdwcode != null">
+        #{cdwcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cdwname != null">
+        #{cdwname,jdbcType=VARCHAR},
+      </if>
+      <if test="iamount != null">
+        #{iamount,jdbcType=DECIMAL},
+      </if>
+      <if test="dvouchdate != null">
+        #{dvouchdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cdeptcode != null">
+        #{cdeptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cdeptname != null">
+        #{cdeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="cdigest != null">
+        #{cdigest,jdbcType=VARCHAR},
+      </if>
+      <if test="createstatus != null">
+        #{createstatus,jdbcType=INTEGER},
+      </if>
+      <if test="updatestatus != null">
+        #{updatestatus,jdbcType=INTEGER},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fromerpno != null">
+        #{fromerpno,jdbcType=VARCHAR},
+      </if>
+      <if test="ccusname != null">
+        #{ccusname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sell.market.model.Closebill">
+    update closebill
+    <set>
+      <if test="cvouchid != null">
+        cvouchid = #{cvouchid,jdbcType=VARCHAR},
+      </if>
+      <if test="csscode != null">
+        csscode = #{csscode,jdbcType=VARCHAR},
+      </if>
+      <if test="cssname != null">
+        cssname = #{cssname,jdbcType=VARCHAR},
+      </if>
+      <if test="cdwcode != null">
+        cdwcode = #{cdwcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cdwname != null">
+        cdwname = #{cdwname,jdbcType=VARCHAR},
+      </if>
+      <if test="iamount != null">
+        iamount = #{iamount,jdbcType=DECIMAL},
+      </if>
+      <if test="dvouchdate != null">
+        dvouchdate = #{dvouchdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cdeptcode != null">
+        cdeptcode = #{cdeptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cdeptname != null">
+        cdeptname = #{cdeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="cdigest != null">
+        cdigest = #{cdigest,jdbcType=VARCHAR},
+      </if>
+      <if test="createstatus != null">
+        createstatus = #{createstatus,jdbcType=INTEGER},
+      </if>
+      <if test="updatestatus != null">
+        updatestatus = #{updatestatus,jdbcType=INTEGER},
+      </if>
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fromerpno != null">
+        fromerpno = #{fromerpno,jdbcType=VARCHAR},
+      </if>
+      <if test="ccusname != null">
+        ccusname = #{ccusname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where iId = #{iid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sell.market.model.Closebill">
+    update closebill
+    set cvouchid = #{cvouchid,jdbcType=VARCHAR},
+      csscode = #{csscode,jdbcType=VARCHAR},
+      cssname = #{cssname,jdbcType=VARCHAR},
+      cdwcode = #{cdwcode,jdbcType=VARCHAR},
+      cdwname = #{cdwname,jdbcType=VARCHAR},
+      iamount = #{iamount,jdbcType=DECIMAL},
+      dvouchdate = #{dvouchdate,jdbcType=TIMESTAMP},
+      cdeptcode = #{cdeptcode,jdbcType=VARCHAR},
+      cdeptname = #{cdeptname,jdbcType=VARCHAR},
+      cdigest = #{cdigest,jdbcType=VARCHAR},
+      createstatus = #{createstatus,jdbcType=INTEGER},
+      updatestatus = #{updatestatus,jdbcType=INTEGER},
+      id = #{id,jdbcType=INTEGER},
+      fromerpno = #{fromerpno,jdbcType=VARCHAR},
+      ccusname = #{ccusname,jdbcType=VARCHAR}
+    where iId = #{iid,jdbcType=VARCHAR}
+  </update>
+</mapper>

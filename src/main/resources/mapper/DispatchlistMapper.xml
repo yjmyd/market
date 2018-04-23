@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sell.market.mapper.DispatchlistMapper">
+  <resultMap id="BaseResultMap" type="com.sell.market.model.Dispatchlist">
+    <result column="dlxqid" jdbcType="VARCHAR" property="dlxqid" />
+    <result column="DLID" jdbcType="VARCHAR" property="dlid" />
+    <result column="cInvCode" jdbcType="VARCHAR" property="cinvcode" />
+    <result column="cInvStd" jdbcType="VARCHAR" property="cinvstd" />
+    <result column="dDate" jdbcType="TIMESTAMP" property="ddate" />
+    <result column="cwhcode" jdbcType="VARCHAR" property="cwhcode" />
+    <result column="iQuantity" jdbcType="DECIMAL" property="iquantity" />
+    <result column="cWhName" jdbcType="VARCHAR" property="cwhname" />
+    <result column="cWhAddress" jdbcType="VARCHAR" property="cwhaddress" />
+    <result column="createstatus" jdbcType="INTEGER" property="createstatus" />
+    <result column="updatestatus" jdbcType="INTEGER" property="updatestatus" />
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="fromerpno" jdbcType="VARCHAR" property="fromerpno" />
+    <result column="cCuscode" jdbcType="VARCHAR" property="ccuscode" />
+    <result column="cCusName" jdbcType="VARCHAR" property="ccusname" />
+    <result column="dw" jdbcType="VARCHAR" property="dw" />
+    <result column="tuno" jdbcType="VARCHAR" property="tuno" />
+    <result column="zid" jdbcType="VARCHAR" property="zid" />
+    <result column="cInvCcode" jdbcType="VARCHAR" property="cinvccode" />
+    <result column="bk" jdbcType="VARCHAR" property="bk" />
+    <result column="txh" jdbcType="VARCHAR" property="txh" />
+    <result column="fhstatus" jdbcType="INTEGER" property="fhstatus" />
+  </resultMap>
+  <insert id="insert" parameterType="com.sell.market.model.Dispatchlist">
+    <selectKey keyProperty="dlxqid" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into dispatchlist (DLID, cInvCode, cInvStd, 
+      dDate, cwhcode, iQuantity, 
+      cWhName, cWhAddress, createstatus, 
+      updatestatus, id, fromerpno, 
+      cCuscode, cCusName, dw, 
+      tuno, zid, cInvCcode, 
+      bk, txh, fhstatus)
+    values (#{dlid,jdbcType=VARCHAR}, #{cinvcode,jdbcType=VARCHAR}, #{cinvstd,jdbcType=VARCHAR}, 
+      #{ddate,jdbcType=TIMESTAMP}, #{cwhcode,jdbcType=VARCHAR}, #{iquantity,jdbcType=DECIMAL}, 
+      #{cwhname,jdbcType=VARCHAR}, #{cwhaddress,jdbcType=VARCHAR}, #{createstatus,jdbcType=INTEGER}, 
+      #{updatestatus,jdbcType=INTEGER}, #{id,jdbcType=VARCHAR}, #{fromerpno,jdbcType=VARCHAR}, 
+      #{ccuscode,jdbcType=VARCHAR}, #{ccusname,jdbcType=VARCHAR}, #{dw,jdbcType=VARCHAR}, 
+      #{tuno,jdbcType=VARCHAR}, #{zid,jdbcType=VARCHAR}, #{cinvccode,jdbcType=VARCHAR}, 
+      #{bk,jdbcType=VARCHAR}, #{txh,jdbcType=VARCHAR}, #{fhstatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sell.market.model.Dispatchlist">
+    <selectKey keyProperty="dlxqid" order="AFTER" resultType="java.lang.String">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into dispatchlist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dlid != null">
+        DLID,
+      </if>
+      <if test="cinvcode != null">
+        cInvCode,
+      </if>
+      <if test="cinvstd != null">
+        cInvStd,
+      </if>
+      <if test="ddate != null">
+        dDate,
+      </if>
+      <if test="cwhcode != null">
+        cwhcode,
+      </if>
+      <if test="iquantity != null">
+        iQuantity,
+      </if>
+      <if test="cwhname != null">
+        cWhName,
+      </if>
+      <if test="cwhaddress != null">
+        cWhAddress,
+      </if>
+      <if test="createstatus != null">
+        createstatus,
+      </if>
+      <if test="updatestatus != null">
+        updatestatus,
+      </if>
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fromerpno != null">
+        fromerpno,
+      </if>
+      <if test="ccuscode != null">
+        cCuscode,
+      </if>
+      <if test="ccusname != null">
+        cCusName,
+      </if>
+      <if test="dw != null">
+        dw,
+      </if>
+      <if test="tuno != null">
+        tuno,
+      </if>
+      <if test="zid != null">
+        zid,
+      </if>
+      <if test="cinvccode != null">
+        cInvCcode,
+      </if>
+      <if test="bk != null">
+        bk,
+      </if>
+      <if test="txh != null">
+        txh,
+      </if>
+      <if test="fhstatus != null">
+        fhstatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dlid != null">
+        #{dlid,jdbcType=VARCHAR},
+      </if>
+      <if test="cinvcode != null">
+        #{cinvcode,jdbcType=VARCHAR},
+      </if>
+      <if test="cinvstd != null">
+        #{cinvstd,jdbcType=VARCHAR},
+      </if>
+      <if test="ddate != null">
+        #{ddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cwhcode != null">
+        #{cwhcode,jdbcType=VARCHAR},
+      </if>
+      <if test="iquantity != null">
+        #{iquantity,jdbcType=DECIMAL},
+      </if>
+      <if test="cwhname != null">
+        #{cwhname,jdbcType=VARCHAR},
+      </if>
+      <if test="cwhaddress != null">
+        #{cwhaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="createstatus != null">
+        #{createstatus,jdbcType=INTEGER},
+      </if>
+      <if test="updatestatus != null">
+        #{updatestatus,jdbcType=INTEGER},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fromerpno != null">
+        #{fromerpno,jdbcType=VARCHAR},
+      </if>
+      <if test="ccuscode != null">
+        #{ccuscode,jdbcType=VARCHAR},
+      </if>
+      <if test="ccusname != null">
+        #{ccusname,jdbcType=VARCHAR},
+      </if>
+      <if test="dw != null">
+        #{dw,jdbcType=VARCHAR},
+      </if>
+      <if test="tuno != null">
+        #{tuno,jdbcType=VARCHAR},
+      </if>
+      <if test="zid != null">
+        #{zid,jdbcType=VARCHAR},
+      </if>
+      <if test="cinvccode != null">
+        #{cinvccode,jdbcType=VARCHAR},
+      </if>
+      <if test="bk != null">
+        #{bk,jdbcType=VARCHAR},
+      </if>
+      <if test="txh != null">
+        #{txh,jdbcType=VARCHAR},
+      </if>
+      <if test="fhstatus != null">
+        #{fhstatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

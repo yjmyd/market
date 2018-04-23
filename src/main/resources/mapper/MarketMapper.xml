@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sell.market.mapper.MarketMapper">
+    <resultMap id="superMarket" type="com.sell.market.model.SuperMarket">
+        <result column="market_id" property="sid"/>
+        <result column="market_name" property="ssupermarket"/>
+        <result column="address" property="saddress"/>
+        <result column="telephone" property="stelephone"/>
+        <result column="state" property="sstate"/>
+        <result column="source" property="sscore"/>
+        <result column="contact" property="srelationpeople"/>
+        <result column="referrer_tel" property="ssupermarketcheck"/>
+        <result column="referrer_id" property="recommender"/>
+        <result column="storehouse" property="sstorehouse"/>
+        <result column="line_id" property="slineid"/>
+        <result column="line_num" property="snum"/>
+        <result column="market_area" property="ssquaremetre"/>
+        <result column="userid" property="suserid"/>
+        <result column="first_type" property="susertype"/>
+        <result column="userTypeName" property="userTypeName"/>
+        <result column="second_type" property="sbusinesstype"/>
+        <result column="around_type" property="sclassic"/>
+        <result column="branch_id" property="branchid"/>
+        <result column="definition" property="sdefinition"/>
+        <result column="is_test" property="istest"/>
+        <result column="position_x" property="sxposition"/>
+        <result column="position_y" property="syposition"/>
+        <result column="location" property="location"/>
+        <result column="location_id" property="location_id"/>
+        <result column="district_id" property="district_id"/>
+        <result column="create_time" property="screateday"/>
+        <result column="update_time" property="updatetime"/>
+        <result column="market_level" property="level"/>
+    </resultMap>
+
+    <!--根据id查询superMarket信息-->
+    <select id="getSuperMarketById" parameterType="java.lang.Integer" resultMap="superMarket">
+        SELECT
+        sum(d.iQuantity) iQuantity
+        FROM
+        dispatchlist d
+        <where>
+            <if test="dDate!=null">
+              AND d.dDate <![CDATA[ >= ]]> '2018-04-01 00:00:00'
+              AND d.dDate <![CDATA[ <= ]]> '2018-4-30 23:59:59'
+            </if>
+            <!-- 按客户类型统计-->
+            <if test="cCuscode!=null and cCuscode!=''">
+              AND d.cCuscode =1
+            </if>
+            <!--按产品统计-->
+            <if test="bk!=null">
+                AND d.bk=1
+            </if>
+            <!--按业务员统计-->
+            <if test="bk!=null">
+                AND d.bk=1
+            </if>
+        </where>
+        AND fhstatus=1001
+    </select>
+
+
+    <!--根据手机号查询superMarket信息-->
+    <select id="getSuperMarketByPhone" parameterType="java.lang.String" resultMap="superMarket">
+        select *
+        from hm_market_info
+        where telephone = #{arg0}
+        LIMIT 1
+    </select>
+
+    <select id="maxNumByLineId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select MAX(line_num)
+        from hm_market_info
+        where line_id=#{arg0}
+    </select>
+
+</mapper>

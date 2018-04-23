@@ -1,0 +1,32 @@
+spring:
+  datasource:
+#     marketdb:
+#       jdbc-url: jdbc:sqlserver://192.168.106.41:1433;DatabaseName=market
+#       driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#       username: sa
+#       password: 8900
+#       initial-size: 1
+#       min-idle: 1
+#       max-active: 20
+#       test-on-borrow: true
+#       max-wait: 60000
+#       time-between-eviction-runs-millis: 60000
+#       min-evictable-idle-time-millis: 300000
+#       validation-query: SELECT 1 FROM DUAL
+#       test-While-Idle: true
+#       test-on-return: false
+#       pool-prepared-statements: false
+#       max-pool-prepared-statement-per-connection-size: 20
+#       filters: stat,wall,log4j,config
+     marketdb:
+#             jdbc-url: jdbc:mysql://192.168.106.41:3306/market?zeroDateTimeBehavior=convertToNull
+             jdbc-url: jdbc:mysql://192.168.1.105:3306/market?zeroDateTimeBehavior=convertToNull
+             username: root
+             password: root
+             driver-class-name: com.mysql.jdbc.Driver
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+
+

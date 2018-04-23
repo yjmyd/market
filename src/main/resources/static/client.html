@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>销售计划达成(客户)</title>
+  <script type="text/javascript" src="/ichart.1.2.1.min.js"></script>
+</head>
+<body>
+
+<div id='canvasDiv'></div>
+
+<script>
+  $(function(){
+    var data = [
+      {
+        name : '月预测',
+        value:[45,52,54],
+        color:'#c88e0a'
+      },
+      {
+        name : '实际达成',
+        value:[60,80,105],
+        color:'#17db3d'
+      },
+      {
+        name : '去年同比',
+        value:[30,50,16],
+        color:'#2730db'
+      }
+      ,
+      {
+        name : '当月预测',
+        value:[45,30,105],
+        color:'#db630c'
+      }
+    ];
+
+    var chart = new iChart.BarMulti2D({
+      render : 'canvasDiv',
+      data: data,
+      labels:["客户一","客户二","客户三"],
+      title : {
+        text:'销售计划达成(客户)',
+        color:'#585757'
+      },
+      footnote : '发货量（单位台）',
+      width : 1200,
+      height : 500,
+      background_color : '#ffffff',
+      legend:{
+        enable:true,
+        background_color : null,
+        border : {
+          enable : false
+        }
+      },
+      coordinate:{
+        scale:[{
+          position:'bottom',
+          start_scale:0,
+          end_scale:120,
+          scale_size:5,
+          scale_space:30
+        }],
+        background_color : null,
+        axis : {
+          width : 0
+        },
+        width:900,
+        height:500
+      }
+    });
+    chart.draw();
+  });
+
+
+</script>
+
+</body>
+</html>
