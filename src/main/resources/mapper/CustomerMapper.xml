@@ -53,6 +53,20 @@
       </if>
     </where>
   </select>
+  <select id="findCustomerAndDispachList" parameterType="hashmap" resultMap="BaseResultMap" >
+    select
+    customerno,customername
+    from customer
+    <where>
+      <if test="list!=null">
+      and customername in
+        <foreach item="item" index="index" collection="list"
+          open="(" separator="," close=")">
+            #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from customer
     where customername = #{customername,jdbcType=VARCHAR}

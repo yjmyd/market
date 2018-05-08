@@ -19,10 +19,10 @@ spring:
 #       max-pool-prepared-statement-per-connection-size: 20
 #       filters: stat,wall,log4j,config
      marketdb:
-#             jdbc-url: jdbc:mysql://192.168.106.41:3306/market?zeroDateTimeBehavior=convertToNull
-             jdbc-url: jdbc:mysql://192.168.1.105:3306/market?zeroDateTimeBehavior=convertToNull
+             jdbc-url: jdbc:mysql://192.168.106.41:3306/market?zeroDateTimeBehavior=convertToNull
+#             jdbc-url: jdbc:mysql://192.168.1.105:3306/market?zeroDateTimeBehavior=convertToNull
              username: root
-             password: root
+             password: liudan123456
              driver-class-name: com.mysql.jdbc.Driver
   mvc:
     view:

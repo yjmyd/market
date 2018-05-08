@@ -151,12 +151,17 @@
   //   chart.draw();
   // });
   $(function () {
-    var pv = [], ip = [], t;
-    var currency = $.ajax({url: "/market/currencyIncom", async: false});
+    var last = [], curr = [];
+    var currencyLast = $.ajax({url: "/market/currencyIncomLast", async: false});
+    var currencyCurr = $.ajax({url: "/market/currencyIncomCurr", async: false});
     //创建随机数据
-    var curren = eval('(' + currency.responseText + ')');;
-    $.each(curren, function (index, content) {
-      pv.push(content.iamount);
+    var currenLast = eval('(' + currencyLast.responseText + ')');;
+    var currenCurr = eval('(' + currencyCurr.responseText + ')');;
+    $.each(currenLast, function (index, content) {
+      last.push(content.iamount);
+    });
+    $.each(currenCurr, function (index, content) {
+      curr.push(content.iamount);
     });
     //创建随机数据
     // for (var i = 0; i < 61; i++) {
@@ -170,24 +175,25 @@
     var data = [
       {
         name: '去年同比',
-        value: pv,
+        value: last,
         color: '#1ecf27',
         line_width: 2
       }
-      // {
-      //   name: '当月预测',
-      //   value: ip,
-      //   color: '#cf2813',
-      //   line_width: 2
-      // }
+      ,
+      {
+        name: '实际达成',
+        value: curr,
+        color: '#0700cf',
+        line_width: 2
+      }
     ];
 
     //创建x轴标签文本
-    var currencyMonth = $.ajax({url: "/market/currencyIncom", async: false});
+    // var currencyMonth = $.ajax({url: "/market/currencyIncomCurr", async: false});
     //创建随机数据
     var labels = [];
-    var months = eval('(' + currencyMonth.responseText + ')');;
-    $.each(months, function (index, content) {
+    // var months = eval('(' + currenCurr.responseText + ')');;
+    $.each(currenCurr, function (index, content) {
       labels.push(content.months);
     });
 
@@ -199,12 +205,12 @@
       subtitle: '',
       footnote: '数据来源：销售易',
       width: 1200,
-      height: 500,
+      height: 600,
       background_color: '#FEFEFE',
       tip: {
         enable: true,
         shadow: true,
-        move_duration: 400,
+        move_duration: 300,
         border: {
           enable: true,
           radius: 5,
@@ -244,8 +250,8 @@
         intersection: false
       },
       coordinate: {
-        width: 840,
-        height: 440,
+        width: 740,
+        height: 400,
         axis: {
           color: '#dcdcdc',
           width: 1

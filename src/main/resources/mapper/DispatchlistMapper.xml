@@ -25,6 +25,7 @@
     <result column="txh" jdbcType="VARCHAR" property="txh" />
     <result column="fhstatus" jdbcType="INTEGER" property="fhstatus" />
   </resultMap>
+
   <insert id="insert" parameterType="com.sell.market.model.Dispatchlist">
     <selectKey keyProperty="dlxqid" order="AFTER" resultType="java.lang.String">
       SELECT LAST_INSERT_ID()
@@ -180,4 +181,29 @@
       </if>
     </trim>
   </insert>
+  <select id="getDispacheList"  parameterType="hashmap" resultMap="BaseResultMap">
+    SELECT
+      sum(d.iQuantity)/1000 iquantity
+    FROM
+    dispatchlist d
+    <where>
+      <if test="startTime!=null and endTime!=null">
+        AND d.dDate <![CDATA[ >= ]]> #{startTime}
+        AND d.dDate <![CDATA[ <= ]]> #{endTime}
+      </if>
+      <!-- 按客户类型统计-->
+      <if test="cCusName!=null and cCusName!=''">
+        AND d.cCusName =#{cCusName}
+      </if>
+      <!--按产品统计-->
+      <if test="bk!=null">
+        AND d.bk=#{bk}
+      </if>
+      <!--按业务员统计-->
+      <if test="bk!=null">
+        AND d.bk=1
+      </if>
+    </where>
+    AND fhstatus=1001
+  </select>
 </mapper>

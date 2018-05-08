@@ -21,4 +21,7 @@ public interface SellMarketService {
 
   List<Closebill> findCloseBillList(String startTime, String endTime);
 
+
+  List<Customer> findCustomerAndDispachList(String customerNo,String startTime, String endTime);
+
 }

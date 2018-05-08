@@ -4,75 +4,152 @@
   <meta charset="UTF-8">
   <title>销售计划达成(客户)</title>
   <script type="text/javascript" src="/ichart.1.2.1.min.js"></script>
-</head>
-<body>
+  <!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
+  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- Include the plugin's CSS and JS: -->
+  <script type="text/javascript"
+          src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+  <link rel="stylesheet"
+        href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"
+        type="text/css"/>
+  <script type="text/javascript"
+          src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-zh_CN.min.js"></script>
 
+  <script>
+    $(document).ready(function () {
+      htmlobj = $.ajax({url: "/market/monthList", async: false});
+      customerList = $.post({url: "/market/customerList", async: false});
+      var cumstomer = eval('(' + customerList.responseText + ')');
+      var month = eval('(' + htmlobj.responseText + ')');
+      $.each(cumstomer, function (index, content) {
+        $("#customerId").append("<option value='" + content.customername + "'>"
+            + content.customername
+            + "</option>");
+      });
+      $.each(month, function (index, itemobj) {
+        $("#monthListId").append("<option value='" + itemobj + "'>" + itemobj + "</option>");
+      });
+    });
+  </script>
+</head>
+<body onload="customerLoad()">
+
+选择客户：
+<select class="selectpicker" id="customerId" multiple data-live-search="true" data-max-options="3"
+        onchange="customerLoad()"></select>
+&nbsp;&nbsp;&nbsp;&nbsp;选择月份：<select class="selectpicker" id="monthListId"></select>
 <div id='canvasDiv'></div>
 
 <script>
-  $(function(){
+  function customerLoad() {
+    var sessionCustomerName = window.sessionStorage.getItem("customerName")
+    var sessionMonthValue = window.sessionStorage.getItem("monthValue")
+    alert("sessionCustomerName:"+sessionCustomerName)
+    alert("sessionMonthValue:"+sessionMonthValue)
+    $('#customerId').selectpicker('val', '1');
+    var customerValue = $('#customerId').val();
+    var monthValue = $('#monthListId').val();
+    alert(customerValue);
+    alert(monthValue);
+    if (customerValue != null && customerValue != "") {
+      if(sessionCustomerName!=null && sessionCustomerName!=""){
+        sessionCustomerName+","+customerValue
+        window.sessionStorage.setItem("customerName", sessionCustomerName);
+      }else{
+        window.sessionStorage.setItem("customerName", customerValue);
+      }
+    }
+    if (monthValue != null && monthValue != "") {
+      window.sessionStorage.setItem("monthValue", monthValue);
+    }
+
+    var customer = [], last = [], curr = [];
+    var customeSell = $.ajax({
+      url: "/market/sell",
+      data: {customerName: customerValue, monthValue: monthValue},
+      async: false
+    });
+    //创建随机数据
+    var sellCurrResult = eval('(' + customeSell.responseText + ')');
+    ;
+    $.each(sellCurrResult, function (index, content) {
+      customer.push(content.customername);
+      $.each(content.lastDispatchList, function (index, contentl) {
+        if (contentl != null && contentl != '') {
+          last.push(contentl);
+        }
+      });
+      $.each(content.currDispatchList, function (index, contentc) {
+        if (contentc != null && contentc != '') {
+          curr.push(contentc);
+        }
+      });
+    });
     var data = [
+      // {
+      //   name : '月预测',
+      //   value:[45,52,54],
+      //   color:'#c88e0a'
+      // },
       {
-        name : '月预测',
-        value:[45,52,54],
-        color:'#c88e0a'
+        name: '实际达成',
+        value: curr,
+        color: '#17db3d'
       },
       {
-        name : '实际达成',
-        value:[60,80,105],
-        color:'#17db3d'
-      },
-      {
-        name : '去年同比',
-        value:[30,50,16],
-        color:'#2730db'
+        name: '去年同比',
+        value: last,
+        color: '#2730db'
       }
-      ,
-      {
-        name : '当月预测',
-        value:[45,30,105],
-        color:'#db630c'
-      }
+      // ,
+      // {
+      //   name : '当月预测',
+      //   value:[45,30,105],
+      //   color:'#db630c'
+      // }
     ];
 
     var chart = new iChart.BarMulti2D({
-      render : 'canvasDiv',
+      render: 'canvasDiv',
       data: data,
-      labels:["客户一","客户二","客户三"],
-      title : {
-        text:'销售计划达成(客户)',
-        color:'#585757'
+      labels: customer,
+      title: {
+        text: '销售计划达成(客户)',
+        color: '#585757'
       },
-      footnote : '发货量（单位台）',
-      width : 1200,
-      height : 500,
-      background_color : '#ffffff',
-      legend:{
-        enable:true,
-        background_color : null,
-        border : {
-          enable : false
+      footnote: '发货量（单位万台）',
+      width: 1200,
+      height: 500,
+      background_color: '#ffffff',
+      legend: {
+        enable: true,
+        background_color: null,
+        border: {
+          enable: false
         }
       },
-      coordinate:{
-        scale:[{
-          position:'bottom',
-          start_scale:0,
-          end_scale:120,
-          scale_size:5,
-          scale_space:30
+      coordinate: {
+        scale: [{
+          position: 'bottom',
+          start_scale: 0,
+          end_scale: 120,
+          scale_size: 5,
+          scale_space: 30
         }],
-        background_color : null,
-        axis : {
-          width : 0
+        background_color: null,
+        axis: {
+          width: 0
         },
-        width:900,
-        height:500
+        width: 900,
+        height: 500
       }
     });
     chart.draw();
-  });
-
+  }
 
 </script>
 

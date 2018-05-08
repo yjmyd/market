@@ -3,7 +3,9 @@ package com.sell.market.model;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.List;
 
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class Customer implements Serializable {
@@ -193,7 +195,26 @@ public class Customer implements Serializable {
 
     private byte[] lastchangetime;
 
+    //去年同比
+    private Dispatchlist lastDispatchList;
+    //实际达成
+    private Dispatchlist currDispatchList;
 
+    public Dispatchlist getLastDispatchList() {
+        return lastDispatchList;
+    }
+
+    public void setLastDispatchList(Dispatchlist lastDispatchList) {
+        this.lastDispatchList = lastDispatchList;
+    }
+
+    public Dispatchlist getCurrDispatchList() {
+        return currDispatchList;
+    }
+
+    public void setCurrDispatchList(Dispatchlist currDispatchList) {
+        this.currDispatchList = currDispatchList;
+    }
 
     private static final long serialVersionUID = 1L;
 
